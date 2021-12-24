@@ -6,8 +6,9 @@ export const itemApiSlice = createApi({
         baseUrl: 'http://localhost:3030/api',
         method: 'GET',
         prepareHeaders(headers) {
+            const token = sessionStorage.getItem('access_token');
             // set headers if needed
-            // headers.set('key', value)
+            headers.set('Authorization', `Bearer ${token}`);
 
             return headers;
         }

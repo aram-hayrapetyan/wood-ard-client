@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Typography, Box, TextField, Button, Input } from '@material-ui/core';
+import { Typography, Box, TextField, Button } from '@material-ui/core';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { useAuthQuery } from '../../features/auth/auth-api-slice';
 import './login.css'
 import { authSending } from '../../features/auth/auth-requested-slice';
 import Auth from './auth';
-import { Router } from '@material-ui/icons';
+import { Navigate } from 'react-router-dom';
 
 function Login() {
     const theme = useAppSelector(state => state.theme.value);
+    const token = useAppSelector(state => state.token.value);
     const authState = useAppSelector(state => state.authState.value);
     const dispatch = useAppDispatch();
 
@@ -23,7 +23,7 @@ function Login() {
         dispatch(authSending(true));
     }
 
-    return (
+    return ( token ? <Navigate to="../page" /> :
         <div id='login_auth' className={`Form Form-${theme}`}>
             <Typography component="h1" variant="h5">
                     Sign in

@@ -3,9 +3,10 @@ import { Routes, Route } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import './Admin.css';
 import Header from './components/header/header';
-import ItemsList from './components/itemsList/items-list';
+import Page from './components/page/page';
 import Login from './components/login/login';
 import { setToken } from './features/auth/token-slice';
+import { CookiesProvider, useCookies } from 'react-cookie';
 
 function Admin() {
     const theme = useAppSelector(state => state.theme.value);
@@ -28,10 +29,12 @@ function Admin() {
     return (
         <div className={`Admin Admin-${theme}`}>
             <Header />
-            <Routes>
-                <Route path="/login" element={<Login />}/>
-                <Route path="/items" element={<ItemsList />} />
-            </Routes>
+            <CookiesProvider>
+                <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/page/*" element={<Page />} />
+                </Routes>
+            </CookiesProvider>
         </div>
     )
 }
