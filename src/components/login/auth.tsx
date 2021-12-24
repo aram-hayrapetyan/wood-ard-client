@@ -3,6 +3,7 @@ import { useAppDispatch } from '../../app/hooks';
 import { useAuthQuery } from '../../features/auth/auth-api-slice';
 import { authSending } from '../../features/auth/auth-requested-slice';
 import { setToken } from '../../features/auth/token-slice';
+import Cookies from 'js-cookie';
 
 function Auth(params: any) {
     const dispatch = useAppDispatch();
@@ -11,7 +12,7 @@ function Auth(params: any) {
     if (!isFetching && isSuccess) {
         if (data.access_token) {
             console.log(data);
-            sessionStorage.setItem('access_token', data.access_token);
+            Cookies.set('access_token', data.access_token);
             dispatch(setToken(data.access_token));
         }
         dispatch(authSending(false));

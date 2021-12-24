@@ -6,13 +6,13 @@ import Header from './components/header/header';
 import Page from './components/page/page';
 import Login from './components/login/login';
 import { setToken } from './features/auth/token-slice';
-import { CookiesProvider, useCookies } from 'react-cookie';
+import Cookies from 'js-cookie';
 
 function Admin() {
     const theme = useAppSelector(state => state.theme.value);
     const token = useAppSelector(state => state.token.value);
     const dispatch = useAppDispatch();
-    let access_token = sessionStorage.getItem('access_token');
+    let access_token = Cookies.get('access_token');
 
     if (!token) {
         if (access_token && access_token !== '') dispatch(setToken(access_token));
@@ -29,12 +29,10 @@ function Admin() {
     return (
         <div className={`Admin Admin-${theme}`}>
             <Header />
-            <CookiesProvider>
-                <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/page/*" element={<Page />} />
-                </Routes>
-            </CookiesProvider>
+            <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/page/*" element={<Page />} />
+            </Routes>
         </div>
     )
 }
