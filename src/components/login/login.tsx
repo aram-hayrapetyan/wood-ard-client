@@ -8,7 +8,6 @@ import { Navigate } from 'react-router-dom';
 
 function Login() {
     const theme = useAppSelector(state => state.theme.value);
-    const token = useAppSelector(state => state.token.value);
     const authState = useAppSelector(state => state.authState.value);
     const dispatch = useAppDispatch();
 
@@ -23,8 +22,7 @@ function Login() {
         dispatch(authSending(true));
     }
 
-    return ( token ? <Navigate to="../page" /> :
-        <div id='login_auth' className={`Form Form-${theme}`}>
+    return (<div id='login_auth' className={`Form Form-${theme}`}>
             <Typography component="h1" variant="h5">
                     Sign in
             </Typography>

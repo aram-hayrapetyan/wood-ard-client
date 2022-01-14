@@ -1,12 +1,14 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import './Admin.css';
 import Header from './components/header/header';
-import Page from './components/page/page';
-import Login from './components/login/login';
+// import Page from './components/page/page';
+// import Login from './components/login/login';
 import { setToken } from './features/auth/token-slice';
 import Cookies from 'js-cookie';
+// import { loadable } from '@loadable/component'
+const loadable = require('@loadable/component');
 
 function Admin() {
     const theme = useAppSelector(state => state.theme.value);
@@ -25,13 +27,15 @@ function Admin() {
 
         
     */
+    const Login = loadable.default(() => import('./components/login/login'));
+    const Page = loadable.default(() => import('./components/page/page'));
 
     return (
         <div className={`Admin Admin-${theme}`}>
             <Header />
             <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/page/*" element={<Page />} />
+                <Route path="/login" element={(access_token || token) ? <Navigate to='../page' /> : <Login />} />
+                <Route path="/page/*" element={(access_token || token) ? <Page /> : <Navigate to='../login' />} />
             </Routes>
         </div>
     )

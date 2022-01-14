@@ -11,8 +11,7 @@ function Auth(params: any) {
 
     if (!isFetching && isSuccess) {
         if (data.access_token) {
-            console.log(data);
-            Cookies.set('access_token', data.access_token);
+            Cookies.set('access_token', data.access_token, { expires: 1/24 });
             dispatch(setToken(data.access_token));
         }
         dispatch(authSending(false));

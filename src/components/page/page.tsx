@@ -1,19 +1,26 @@
+import { Button } from '@material-ui/core';
+import Cookies from 'js-cookie';
 import React from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import { useAppSelector } from '../../app/hooks';
+import { Route, Routes } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setToken } from '../../features/auth/token-slice';
 import ItemsList from '../itemsList/items-list';
 
 function Page() {
     const theme = useAppSelector(state => state.theme.value);
-    const token = useAppSelector(state => state.token.value);
+    const dispatch = useAppDispatch();
+
+    function logout() {
+        Cookies.remove('access_token');
+        dispatch(setToken(null));
+    }
 
     return (
         <div id="admin_page" className={`page page-${theme}`}>
-        { !token ? <Navigate to="../login" /> : 
+            <Button onClick={() => logout()}>Logout</Button>
             <Routes>
                 <Route path="/items" element={<ItemsList />}></Route>
-            </Routes> 
-        }
+            </Routes>
             Hello there
         </div>
     )
