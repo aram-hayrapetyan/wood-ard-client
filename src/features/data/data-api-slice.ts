@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // import Cookies from "js-cookie";
 
-export const itemApiSlice = createApi({
+export const dataApiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
         baseUrl: 'http://localhost:3030/api',
@@ -16,7 +16,7 @@ export const itemApiSlice = createApi({
     }),
     endpoints(builder) {
         return {
-            fetchItems: builder.query<any[], string|void> ({
+            fetchData: builder.query<any[], string|void> ({
                 query(path) {
                     return `/${path}`;
                 }
@@ -25,4 +25,4 @@ export const itemApiSlice = createApi({
     }
 })
 
-export const { useFetchItemsQuery } = itemApiSlice;
+export const { useFetchDataQuery } = dataApiSlice;

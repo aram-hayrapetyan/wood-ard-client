@@ -1,11 +1,11 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Container, Typography } from "@material-ui/core";
 import { useAppSelector } from "../../app/hooks";
-import { useFetchItemsQuery } from "../../features/Items/items-api-slice";
+import { useFetchDataQuery } from "../../features/data/data-api-slice";
 import './item-cards.css';
 
 function ItemCards(attr: any) {
   const theme = useAppSelector(state => state.theme.value);
-  const { data = [], isFetching } = useFetchItemsQuery('items');
+  const { data = [], isFetching } = useFetchDataQuery('items');
 
   function containerScroll(event: any) {
     

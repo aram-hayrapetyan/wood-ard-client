@@ -4,7 +4,7 @@ import languageChanger from '../features/language/language-slice';
 import themeChanger from '../features/themes/themes-slice';
 import authStateReducer from '../features/auth/auth-requested-slice';
 import tokenReducer from '../features/auth/token-slice';
-import { itemApiSlice } from "../features/Items/items-api-slice";
+import { dataApiSlice } from "../features/data/data-api-slice";
 import { authApiSlice } from "../features/auth/auth-api-slice";
 
 export const store = configureStore({
@@ -14,13 +14,15 @@ export const store = configureStore({
         theme: themeChanger,
         authState: authStateReducer,
         token: tokenReducer,
-        [itemApiSlice.reducerPath]: itemApiSlice.reducer,
+        [dataApiSlice.reducerPath]: dataApiSlice.reducer,
         [authApiSlice.reducerPath]: authApiSlice.reducer,
+        [dataApiSlice.reducerPath]: dataApiSlice.reducer,
     },
     middleware: getDefaultMiddleware => {
         return getDefaultMiddleware()
-            .concat(itemApiSlice.middleware)
-            .concat(authApiSlice.middleware);
+            .concat(dataApiSlice.middleware)
+            .concat(authApiSlice.middleware)
+            .concat(dataApiSlice.middleware);
     }
 });
 
