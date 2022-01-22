@@ -1,6 +1,6 @@
 import React from 'react';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
-import { useFetchItemsQuery } from '../../features/Items/items-api-slice';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { useFetchDataQuery } from '../../features/data/data-api-slice';
 import './items-list.css'
 import { useAppSelector } from '../../app/hooks';
 
@@ -31,7 +31,7 @@ interface Column {
 
 export default function ItemsList() {
     const theme = useAppSelector(state => state.theme.value);
-    const { data = [], isFetching } = useFetchItemsQuery('items');
+    const { data = [], isFetching } = useFetchDataQuery('items');
     return (
         <Paper className="items-paper">
           <TableContainer className="items-table-conatiner">
