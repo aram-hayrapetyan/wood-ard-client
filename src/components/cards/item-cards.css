@@ -10,14 +10,15 @@
 }
 
 .app-card-dark {
-    background-color: #424242!important;
+    background-color: #424242e1!important;
     color: #f5f5f5!important;
 }
 
 .app-card-light {
-    background-color: #f5f5f5!important;
+    background-color: #f5f5f5e1!important;
     color: #424242!important;
 }
+
 .app-card {
     position: relative;
     margin: 0 5px;
@@ -39,6 +40,11 @@
 }
 
 .transparency {
+    box-shadow: inset 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
     opacity: 0;
     transition: 0.3s!important;
+}
+
+.transparency:hover {
+    opacity: 0.9;
 }

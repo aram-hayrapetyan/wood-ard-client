@@ -7,10 +7,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Admin from './Admin';
+import Cheats from './components/cheats/cheats';
+require('dotenv').config();
 
 render(
   <React.StrictMode>
     <Provider store={store}>
+      <Cheats/>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} />

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Typography, Box, TextField, Button } from '@material-ui/core';
+import { Typography, Box, TextField, Button, Paper } from '@material-ui/core';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import './login.css'
 import { authSending } from '../../features/auth/auth-requested-slice';
 import Auth from './auth';
-import { Navigate } from 'react-router-dom';
 
 function Login() {
     const theme = useAppSelector(state => state.theme.value);
@@ -22,7 +21,7 @@ function Login() {
         dispatch(authSending(true));
     }
 
-    return (<div id='login_auth' className={`Form Form-${theme}`}>
+    return (<Paper className={`Form Form-${theme}`}>
             <Typography component="h1" variant="h5">
                     Sign in
             </Typography>
@@ -54,7 +53,7 @@ function Login() {
                 <Button className={`button-${theme}`} onClick={handleSubmit}>Sign In</Button>
             </Box>
             {authState ? <Auth credentials={credentials} /> : ''}
-        </div>
+        </Paper>
     )
 }
 

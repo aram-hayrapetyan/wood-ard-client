@@ -3,11 +3,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import './Admin.css';
 import Header from './components/header/header';
-// import Page from './components/page/page';
-// import Login from './components/login/login';
 import { setToken } from './features/auth/token-slice';
 import Cookies from 'js-cookie';
-// import { loadable } from '@loadable/component'
 const loadable = require('@loadable/component');
 
 function Admin() {

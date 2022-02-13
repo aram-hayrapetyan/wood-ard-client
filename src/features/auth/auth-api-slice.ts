@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+require('dotenv').config();
 
 interface authCredetials {
     email: string,
@@ -8,7 +9,7 @@ interface authCredetials {
 export const authApiSlice = createApi({
     reducerPath: 'auth',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:3030/api',
+        baseUrl: process.env.REACT_APP_BASE_URL,
         prepareHeaders(headers) {
             headers.set('Content-Type', 'application/json');
             return headers;

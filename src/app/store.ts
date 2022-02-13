@@ -6,6 +6,7 @@ import authStateReducer from '../features/auth/auth-requested-slice';
 import tokenReducer from '../features/auth/token-slice';
 import { dataApiSlice } from "../features/data/data-api-slice";
 import { authApiSlice } from "../features/auth/auth-api-slice";
+import { dataApiAdminSlice } from "../features/data/data-api-admin-slice";
 
 export const store = configureStore({
     reducer: {
@@ -16,13 +17,13 @@ export const store = configureStore({
         token: tokenReducer,
         [dataApiSlice.reducerPath]: dataApiSlice.reducer,
         [authApiSlice.reducerPath]: authApiSlice.reducer,
-        [dataApiSlice.reducerPath]: dataApiSlice.reducer,
+        [dataApiAdminSlice.reducerPath]: dataApiAdminSlice.reducer,
     },
     middleware: getDefaultMiddleware => {
         return getDefaultMiddleware()
             .concat(dataApiSlice.middleware)
             .concat(authApiSlice.middleware)
-            .concat(dataApiSlice.middleware);
+            .concat(dataApiAdminSlice.middleware);
     }
 });
 
