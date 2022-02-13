@@ -11,14 +11,6 @@ function ItemCards(attr: any) {
     
   }
 
-  function cardShow(event: any) {
-    event.target.closest('.app-card-content').style.opacity = 0.8;
-  }
-
-  function cardHide(event: any) {
-    event.target.closest('.app-card-content').style.opacity = 0;
-  }
-
   return (
       <div className="cards-container" onScroll={containerScroll}>
         <Container className="card-container">
@@ -28,11 +20,11 @@ function ItemCards(attr: any) {
               <CardMedia
                 component="img"
                 height="140"
-                image={item.image}
+                image={`${process.env.REACT_APP_BASE_URL}/${item.image}`}
                 alt={item.name}
               />
             </Card>
-            <Card className={'app-card-content transparency app-card-' + theme} onMouseEnter={cardShow} onMouseLeave={cardHide}>
+            <Card className={'app-card-content transparency app-card-' + theme}>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   {item.name}

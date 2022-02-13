@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// import Cookies from "js-cookie";
+require('dotenv').config();
 
 export const dataApiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:3030/api',
+        baseUrl: process.env.REACT_APP_BASE_URL,
         method: 'GET',
         prepareHeaders(headers) {
             // const token = Cookies.get('access_token')
