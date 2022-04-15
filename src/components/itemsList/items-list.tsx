@@ -1,56 +1,61 @@
 import React, { useState } from 'react';
-import { Box, Button, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@material-ui/core';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import { useFetchDataQuery } from '../../features/data/data-api-slice';
 import './items-list.css'
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import ItemModal from './items-modal';
-import { Close, Edit } from '@material-ui/icons';
-import { useAddDataMutation } from '../../features/data/data-api-admin-slice';
+import ItemsImage from './items-image';
+import ItemsImageModal from './items-image-modal';
+import { addItems } from '../../features/items/items-slice';
+import ItemsActions from './item-action-buttons';
 
 interface Column {
-    id: 'type' | 'material' | 'name' | 'size' | 'image';
-    label: string;
-    minWidth?: number;
-    align?: 'right';
-    format?: (value: number) => string;
-  }
+  id: 'type' | 'material' | 'name' | 'size' | 'image' | 'actions';
+  label: string;
+  minWidth?: number;
+  align?: 'right' | 'center';
+  format?: (value: number) => string;
+}
+
+interface Image {
+  id: number;
+  image: string;
+}
   
-  const columns: readonly Column[] = [
-    { id: 'image',  label: 'Image',  minWidth: 75 },
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'material', label: 'Material', minWidth: 100 },
-    { id: 'type', label: 'Type', minWidth: 100, align: 'right' },
-    { id: 'size',  label: 'Size',  minWidth: 100,  align: 'right' },
-  ];
+const columns: readonly Column[] = [
+  { id: 'image',  label: 'Image',  minWidth: 75 },
+  { id: 'name', label: 'Name', minWidth: 170 },
+  { id: 'material', label: 'Material', minWidth: 100 },
+  { id: 'type', label: 'Type', minWidth: 100, align: 'right' },
+  { id: 'size',  label: 'Size',  minWidth: 100,  align: 'right' },
+  { id: 'actions',  label: 'Actions',  minWidth: 34,  align: 'center' },
+];
 
 export default function ItemsList() {
+    let imageArr: Image[] = [];
+    const dispatch = useAppDispatch();
     const theme = useAppSelector(state => state.theme.value);
+    const items = useAppSelector(state => state.items.value);
     const { data = [], isFetching, isSuccess } = useFetchDataQuery('items');
-    const [ addData, {isLoading} ] = useAddDataMutation();
 
-    const [open, setOpen] = useState(false);
-    const [imageItemID, setImageItemID] = useState(0);
-    const [imageItem, setImageItem] = useState('');
-
-    const handleClose = () => { setOpen(false); setImageItem('') };
-
-    function handleImageModal(item_id: number) {
-      setImageItemID(item_id);
-      setOpen(true);
+    if (!isFetching && isSuccess && items.length === 0) {
+      dispatch(addItems(data));
     }
 
-    function uploadItemImage(e: any) {
-      e.preventDefault();
-      if (imageItem) {
-        const formData = new FormData();
-        formData.append('file', imageItem);
-        addData({ path: `items/${imageItemID}/image`, body: formData });
-      }
+    const [album = [], setAlbum] = useState(imageArr);
+    const [open, setOpen] = useState(false);
+    const [itemID, setitemID] = useState(0);
+
+    function handleImageModal(item_id: number, index: number) {
+      setAlbum(items[index].album);
+      setitemID(item_id);
+      setOpen(true);
     }
 
     return (
         <Paper className="items-paper">
           <ItemModal></ItemModal>
+           {/* Table */}
           <TableContainer className="items-table-conatiner">
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
@@ -68,21 +73,23 @@ export default function ItemsList() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {isSuccess && data.map((row) => {
+                {items.map((row, index) => {
                     return (
                       <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                         {columns.map((column) => {
-                          const value = row[column.id];
                           return (
                             <TableCell className={`table-cell table-cell-${theme}`} key={column.id} align={column.align}>
                               {column.id === 'image' ? 
                                 <Button 
                                 className={`item-image-button-${theme} item-image-button`}
-                                onClick={() => handleImageModal(row.id)}>
-                                  <AdminImage path={value} />
+                                onClick={() => handleImageModal(row.id, index)}>
+                                  <ItemsImage path={row[column.id]} />
                                 </Button> 
                                 : 
-                                value}
+                                ( column.id === 'actions' ?
+                                  <ItemsActions itemId={row.id} deleted={row.deleted} />
+                                  : 
+                                  row[column.id])}
                             </TableCell>
                           );
                         })}
@@ -92,55 +99,8 @@ export default function ItemsList() {
               </TableBody>
             </Table>
           </TableContainer>
-          <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          className="item-modal"
-          >
-              <Box className={`item-modal-box item-modal-box-${theme}`}>
-                  <Box className="model-item-header-container">
-                      <Typography id="modal-modal-title" variant="h6" component="h2">
-                          Add New Item
-                      </Typography>
-                      <Button className={`button-${theme} modal-close-button`} onClick={handleClose}>
-                          <Close />
-                      </Button>
-                  </Box>
-                  <Box 
-                  className="item-modal-box-form" 
-                  component="form"
-                  >
-                    <TextField
-                        className={`text-field-${theme}`}
-                        margin="normal"
-                        required
-                        fullWidth
-                        type="file"
-                        id="item_itage_id"
-                        label="Item Image"
-                        autoFocus
-                        variant="outlined"
-                        onChange={(e: any) => setImageItem(e.target.files[0])}
-                        />
-                      <Button className={`button-${theme}`} onClick={uploadItemImage}>Save Item Image</Button>
-                  </Box>
-              </Box>
-          </Modal>
+          {/* Modal */}
+          <ItemsImageModal open={open} openCall={setOpen} album={album} itemId={itemID} />
         </Paper>
       );
-}
-
-function AdminImage(attr: any) {
-  const theme = useAppSelector(state => state.theme.value);
-
-  return (
-      <div className="item-image-button-container">
-        <img width="75px" height="75px" src={`${process.env.REACT_APP_BASE_URL}/${attr.path}`} />
-        <div className={`item-image-button-icon button-${theme} transparency`}>
-            <Edit/>
-        </div>
-      </div>
-  );
 }
