@@ -21,20 +21,9 @@ export default function ItemModal() {
 
     const setValue = (target: any) => {
         if (sent) setSent(false);
-        // if (target.name === 'image') {
-        //     let img = target.files[0];
-        //     let fr = new FileReader();
-        //     fr.onload = () => {
-        //         let img = document.getElementById(`previewImg`);
-        //         if (img) img.setAttribute('src', `${fr.result}`);
-        //     }
-        //     fr.readAsDataURL(img);
-
-        //     item[target.name] = target.files[0];
-        // } else {
         item[target.name] = target.value;
-        // }
     };
+    
     const handleSaveItem = (e: any) => {
         e.preventDefault();
         if (!sent) setSent(true);
@@ -56,7 +45,7 @@ export default function ItemModal() {
             className="item-modal"
         >
             <Box className={`item-modal-box item-modal-box-${theme}`}>
-                <Box className="model-item-header-container">
+                <Box className="modal-item-header-container">
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Add New Item
                     </Typography>
@@ -69,27 +58,6 @@ export default function ItemModal() {
                 component="form"
                 >
                     {fields.map((_, index) => (
-                        // _ === 'image' ?
-                        // <div className="MuiFormControl-marginNormal">
-                        //     <Button
-                        //     className={`button-${theme} ${!item[_] && sent ? "button-error": ''}`}
-                        //     variant="outlined"
-                        //     component="label"
-                        //     >
-                        //     Upload Image
-                        //     <input
-                        //         key={index}
-                        //         id={'item_' + _ + '_' + index}
-                        //         type="file"
-                        //         accept="image/png, image/gif, image/jpeg"
-                        //         onChange={e => setValue(e.target)}
-                        //         name={_}
-                        //         hidden
-                        //     />
-                        //     </Button>
-                        //     <img id="previewImg" src="noimage" />
-                        // </div>
-                        // :
                         <TextField
                         key={index}
                         className={`text-field-${theme} item-modal-text-field`}
