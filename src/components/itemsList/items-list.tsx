@@ -1,35 +1,18 @@
 import React, { useState } from 'react';
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Button, Container } from '@material-ui/core';
 import { useFetchDataQuery } from '../../features/data/data-api-slice';
 import './items-list.css'
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import ItemModal from './items-modal';
 import ItemsImage from './items-image';
-import ItemsImageModal from './items-image-modal';
 import { addItems } from '../../features/items/items-slice';
 import ItemsActions from './item-action-buttons';
-
-interface Column {
-  id: 'type' | 'material' | 'name' | 'size' | 'image' | 'actions';
-  label: string;
-  minWidth?: number;
-  align?: 'right' | 'center';
-  format?: (value: number) => string;
-}
+import WoodModal from '../popups/modal';
 
 interface Image {
   id: number;
   image: string;
 }
-  
-const columns: readonly Column[] = [
-  { id: 'image',  label: 'Image',  minWidth: 75 },
-  { id: 'name', label: 'Name', minWidth: 170 },
-  { id: 'material', label: 'Material', minWidth: 100 },
-  { id: 'type', label: 'Type', minWidth: 100, align: 'right' },
-  { id: 'size',  label: 'Size',  minWidth: 100,  align: 'right' },
-  { id: 'actions',  label: 'Actions',  minWidth: 34,  align: 'center' },
-];
 
 export default function ItemsList() {
     let imageArr: Image[] = [];
@@ -53,54 +36,37 @@ export default function ItemsList() {
     }
 
     return (
-        <Paper className="items-paper">
+        <div className="items-paper">
           <ItemModal></ItemModal>
            {/* Table */}
-          <TableContainer className="items-table-conatiner">
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell
-                      className={`table-header table-header-${theme}`}
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {items.map((row, index) => {
-                    return (
-                      <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                        {columns.map((column) => {
-                          return (
-                            <TableCell className={`table-cell table-cell-${theme}`} key={column.id} align={column.align}>
-                              {column.id === 'image' ? 
-                                <Button 
-                                className={`item-image-button-${theme} item-image-button`}
-                                onClick={() => handleImageModal(row.id, index)}>
-                                  <ItemsImage path={row[column.id]} />
-                                </Button> 
-                                : 
-                                ( column.id === 'actions' ?
-                                  <ItemsActions itemId={row.id} deleted={row.deleted} />
-                                  : 
-                                  row[column.id])}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
-              </TableBody>
-            </Table>
-          </TableContainer>
+           <div className="items-list-conatiner">
+            {items.map((row, index) => {
+              return(
+                <div className={`items-list-item items-list-item-${theme}`}>
+                  <div className="item-image-container">
+                    <Button 
+                    className={`item-image-button-${theme} item-image-button`}
+                    onClick={() => handleImageModal(row.id, index)}>
+                      <ItemsImage path={row.image} />
+                    </Button> 
+                  </div>
+                  <div className="item-description-container">
+                    <p>{`Name: ${row.name}`}</p>
+                    <p>{`${row.type} made of ${row.material.split(', ').join(' and ')}`}</p>
+                  </div>
+                  <ItemsActions itemId={row.id} deleted={row.deleted} />
+                </div>)
+            })}
+           </div>
           {/* Modal */}
-          <ItemsImageModal open={open} openCall={setOpen} album={album} itemId={itemID} />
-        </Paper>
+          <WoodModal
+                open={open}
+                openCall={setOpen}
+                modalTitle='Add New Images For Item'
+                modalMessage=''
+                options={{itemId: itemID, album}}
+                contentAlias='ItemsImageModal'
+            />
+        </div>
       );
 }

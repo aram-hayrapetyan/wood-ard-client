@@ -1,22 +1,39 @@
 import React, { useState } from 'react';
-import { Box, Button, Modal, TextField } from '@material-ui/core';
+import { Box, Button, TextField } from '@material-ui/core';
 import { useAppSelector } from '../../app/hooks';
-import { useAddDataMutation } from '../../features/data/data-api-admin-slice';
+import { useAddDataMutation, useEditDataMutation } from '../../features/data/data-api-admin-slice';
+import { useDispatch } from 'react-redux';
+import { addItems } from '../../features/items/items-slice';
 
-const fields = ['name', 'material', 'type', 'size'];
+const fields: string[] = ['name', 'material', 'type', 'details', 'price'];
 
-const defaultItem: any = {name: '', material: '', type: '', size: ''};
-let item: any = Object.assign({}, defaultItem);
+const defaultItem: any = {name: '', material: '', type: '', details: '', price: null};
 
-export default function ItemForm() {
-    const [ addData, {data, isLoading} ] = useAddDataMutation();
+export default function ItemForm(props: any) {
+    const dispatch = useDispatch();
+    const [ addData ] = useAddDataMutation();
+    const [ editData ] = useEditDataMutation();
     const theme = useAppSelector(state => state.theme.value);
+    const items = useAppSelector(state => state.items.value);
+    let working_item = Object.assign({}, defaultItem);
+
+    if (props.options.itemId) {
+        let edit_item = {...items.find(item => item.id === props.options.itemId)};
+        if (edit_item) working_item = Object.assign({}, {
+            name: edit_item.name,
+            material: edit_item.material,
+            type: edit_item.type,
+            details: edit_item.details,
+            price: edit_item.price
+        });
+    }
 
     const [sent, setSent] = useState(false);
+    const [item, setItem] = useState(working_item);
 
     const setValue = (target: any) => {
         if (sent) setSent(false);
-        item[target.name] = target.value;
+        setItem({...item, [target.name]: target.value});
     };
     
     const handleSaveItem = (e: any) => {
@@ -25,7 +42,28 @@ export default function ItemForm() {
         for (let value of Object.values(item)) {
             if (!value) return;
         }
-        addData({ path: 'items', body: item });
+
+        if (props.options.itemId) {
+            editData({ path: `items/${props.options.itemId}`, body: item })
+                .then((res: any) => {
+                    let { data } = res.data;
+                    dispatch(addItems(data));
+                })
+                .catch((res: any) => {
+                    let error = res.error;
+                    console.error(error);
+                });
+        } else {
+            addData({ path: 'items', body: item })
+                .then((res: any) => {
+                    let { data } = res.data;
+                    dispatch(addItems(data));
+                })
+                .catch((res: any) => {
+                    let error = res.error;
+                    console.error(error);
+                });
+        }
     };
 
     return (
@@ -33,7 +71,7 @@ export default function ItemForm() {
         className="item-modal-box-form" 
         component="form"
         >
-            {fields.map((_, index) => (
+            {fields.map((_: string, index: number) => (
                 <TextField
                 key={index}
                 className={`text-field-${theme} item-modal-text-field`}
@@ -41,13 +79,14 @@ export default function ItemForm() {
                 required
                 fullWidth
                 error={!item[_] && sent ? true : false}
-                type="text"
+                type={_ === 'price' ? 'number' : 'text'}
                 id={'item_' + _ + '_' + index}
                 label={_.charAt(0).toUpperCase() + _.slice(1)}
                 name={_}
                 autoFocus
                 variant="outlined"
                 onChange={e => setValue(e.target)}
+                value={item[_]}
                 />
             ))}
             <Box className="modal-button-right MuiFormControl-fullWidth MuiFormControl-marginNormal">

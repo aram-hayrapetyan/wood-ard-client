@@ -1,7 +1,8 @@
 .Admin {
-    text-align: center;
     width: 100%;
     height: 100vh;
+    padding-bottom: 20px;
+    overflow-y: auto;
 }
 
 .Admin-dark {

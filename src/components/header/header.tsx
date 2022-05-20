@@ -1,5 +1,5 @@
-import { AppBar, Toolbar, FormGroup, FormControlLabel, Switch, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import React from 'react';
+import { AppBar, Toolbar, FormGroup, FormControlLabel, Switch, FormControl, InputLabel, Select, MenuItem, Container } from '@material-ui/core';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { changeLanguage } from '../../features/language/language-slice';
 import { changeTheme } from '../../features/themes/themes-slice';
@@ -11,38 +11,66 @@ function Header() {
 
     const dispatch = useAppDispatch();
 
-    function handleLanguageSwap(e: any) {
-        dispatch(changeLanguage(e.target.value));
+    let localTheme = localStorage.getItem("woodArdTheme");
+    let localLanguage = localStorage.getItem("woodArdLangage");
+
+    if (localTheme) {
+        dispatch(changeTheme(localTheme));
+    } else {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')) {
+            let isDark: boolean = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            handleThemeChange(isDark);
+        }
     }
 
-    function handleThemeChange(e: any) {
-        dispatch(changeTheme(e.target.checked ? 'dark' : 'light'));
+    if (localLanguage) {
+        dispatch(changeLanguage(localLanguage));
+    } else {
+        fetch('https://ipapi.co/json/')
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                handleLanguageSwap(data.country_code_iso3);
+            });
+    }
+
+    function handleLanguageSwap(value: string) {
+        dispatch(changeLanguage(value));
+        localStorage.setItem("woodArdLangage", value);
+    }
+
+    function handleThemeChange(checked: boolean) {
+        dispatch(changeTheme(checked ? 'dark' : 'light'));
+        localStorage.setItem("woodArdTheme", checked ? 'dark' : 'light');
     }
 
     return (
         <AppBar position='static' color='inherit' tabIndex={0} className={'AppBar-custom-' + theme}>
-            <Toolbar variant="dense">
-                <FormGroup>
-                    <FormControlLabel
-                    control={
-                        <Switch
-                        color='default'
-                        checked={theme === 'dark'}
-                        onChange={handleThemeChange}
-                        aria-label={"Theme switch, " + theme}
+            <Container style={{position: 'relative'}}>
+                <Toolbar variant="dense">
+                    <FormGroup>
+                        <FormControlLabel
+                        control={
+                            <Switch
+                            color='default'
+                            checked={theme === 'dark'}
+                            onChange={(e: any) => handleThemeChange(e.target.checked)}
+                            aria-label={"Theme switch, " + theme}
+                            />
+                        }
+                        label=''
                         />
-                    }
-                    label=''
-                    />
-                </FormGroup>
-                <FormControl>
-                    <InputLabel id="lang-select-label">Language</InputLabel>
-                    <Select labelId='lang-select-label' value={language} aria-label={language} onChange={handleLanguageSwap}>
-                        <MenuItem value='eng'>eng</MenuItem>
-                        <MenuItem value='arm'>arm</MenuItem>
-                    </Select>
-                </FormControl>
-            </Toolbar>
+                    </FormGroup>
+                    <FormControl>
+                        <InputLabel id="lang-select-label">Language</InputLabel>
+                        <Select labelId='lang-select-label' value={language} aria-label={language} onChange={(e: any) => handleLanguageSwap(e.target.value)}>
+                            <MenuItem value='ENG'>ENG</MenuItem>
+                            <MenuItem value='ARM'>ARM</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Toolbar>
+            </Container>
         </AppBar>
     );
 }

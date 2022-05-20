@@ -4,10 +4,10 @@ import { useAppSelector } from '../../app/hooks';
 import { Close } from '@material-ui/icons';
 import ItemForm from '../itemsList/items-form';
 import ItemDetails from '../cards/item-details';
+import ItemsImageModal from '../itemsList/items-image-modal';
 
 interface WoodModalProps {
     openCall: Function;
-    actionCall: Function;
     open: boolean;
     modalTitle: string;
     modalMessage?: string;
@@ -18,6 +18,19 @@ interface WoodModalProps {
 export default function WoodModal(props: WoodModalProps) {
     const theme = useAppSelector(state => state.theme.value);
     const handleClose = () => props.openCall(false);
+
+    function contAlias(alias: string): JSX.Element|string {
+        switch(alias) {
+            case 'ItemForm':
+                return <ItemForm options={props.options} openCall={props.openCall} /> ;
+            case 'ItemDetails':
+                return <ItemDetails options={props.options} openCall={props.openCall} /> ;
+            case 'ItemsImageModal':
+                return <ItemsImageModal options={props.options} openCall={props.openCall} />;
+            default:
+                return '';
+        }
+    }
 
     return (
         <Modal
@@ -31,15 +44,12 @@ export default function WoodModal(props: WoodModalProps) {
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         {props.modalTitle}
                     </Typography>
-                    <Button className={`button-${theme} modal-close-button`} onClick={handleClose}>
+                    <Button className={`button-icon-${theme} modal-close-button`} onClick={handleClose}>
                         <Close />
                     </Button>
                 </Box>
                 <Box>{props.modalMessage}</Box>
-                { 
-                    (props.contentAlias === 'ItemForm') ? <ItemForm /> 
-                    : ((props.contentAlias === 'ItemDetails') ? <ItemDetails options={props.options} /> : '')
-                }
+                { contAlias(props.contentAlias) }
             </Box>
         </Modal>
     );

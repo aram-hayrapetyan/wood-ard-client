@@ -10,7 +10,7 @@ export default function ItemsImage(attr: any) {
         <div className="item-image-button-container">
           <img width="75px" height="75px" src={`${process.env.REACT_APP_BASE_URL}/${attr.path}`} />
           <Tooltip title="Edit Item Album">
-            <div className={`item-image-button-icon button-${theme} transparency`}>
+            <div className={`item-image-button-icon button-icon-${theme} ${theme === 'light' ? 'bg-light' : ''} transparency`}>
                 <Edit/>
             </div>
           </Tooltip>

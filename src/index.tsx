@@ -4,10 +4,13 @@ import { Provider } from 'react-redux';
 import { store } from './app/store';
 import { BrowserRouter, Routes,  Route } from "react-router-dom";
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import App from './App';
 import Admin from './Admin';
+import PrivacyPolicy from './privacy-policy';
 import Cheats from './components/cheats/cheats';
+import NotFound from './404';
+import Catalog from './catalog';
 require('dotenv').config();
 
 render(
@@ -17,7 +20,10 @@ render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/catalog" element={<Catalog />} />
           <Route path="/admin/*" element={<Admin />} />
+          <Route path="/privacy-policy/*" element={<PrivacyPolicy />} />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </Provider>
