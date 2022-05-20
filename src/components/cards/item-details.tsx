@@ -1,3 +1,5 @@
+import { Button, Card, CardActions, CardContent, Tooltip, Typography } from "@material-ui/core";
+import { AddShoppingCart } from "@material-ui/icons";
 import { useAppSelector } from "../../app/hooks";
 import ImageSlider from "../imageSlider/image-slider";
 
@@ -10,8 +12,22 @@ function ItemDetails(props: any) {
     console.log(item)
 
   return (
-      <div>
+      <div className="item-details-contect">
         <ImageSlider album={item.album} />
+        <Card className={`app-card-${theme}`} variant="outlined">
+          <CardContent>
+            <Typography variant="body2">
+              Item Name
+            </Typography>
+            <Typography variant="h5" component="div">
+              {item.name}
+            </Typography>
+            <br />
+            <Typography variant="body1">
+              {item.type} from {item.material}
+            </Typography>
+          </CardContent>
+        </Card>
       </div>
   )
 }

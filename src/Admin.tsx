@@ -5,6 +5,8 @@ import './Admin.css';
 import Header from './components/header/header';
 import { setToken } from './features/auth/token-slice';
 import Cookies from 'js-cookie';
+import { Container } from '@material-ui/core';
+import NotFound from './404';
 const loadable = require('@loadable/component');
 
 function Admin() {
@@ -30,10 +32,13 @@ function Admin() {
     return (
         <div className={`Admin Admin-${theme}`}>
             <Header />
-            <Routes>
-                <Route path="/login" element={(access_token || token) ? <Navigate to='../page' /> : <Login />} />
-                <Route path="/page/*" element={(access_token || token) ? <Page /> : <Navigate to='../login' />} />
-            </Routes>
+            <Container style={{position: 'relative'}}>
+                <Routes>
+                    <Route path="/login" element={(access_token || token) ? <Navigate to='../page' /> : <Login />} />
+                    <Route path="/page/*" element={(access_token || token) ? <Page /> : <Navigate to='../login' />} />
+                    <Route path="/*" element={<NotFound />} />
+                </Routes>
+            </Container>
         </div>
     )
 }

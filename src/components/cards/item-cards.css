@@ -7,6 +7,8 @@
     display: flex!important;
     width: max-content!important;
     overflow: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .app-card-dark {
@@ -22,15 +24,21 @@
 .app-card {
     position: relative;
     margin: 0 5px;
+}
+
+.app-card, .app-card-content, .app-card-content-info {
+    height: 200px;
     width: 250px;
     min-width: 250px;
-    height: 200px;
+}
+
+.app-card-content-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
 }
 
 .app-card-content {
-    height: 200px;
-    width: 250px;
-    min-width: 250px;
     position: absolute;
 }
 
@@ -47,4 +55,8 @@
 
 .transparency:hover {
     opacity: 0.9;
+}
+
+.item-details-content {
+    max-width: 600px;
 }

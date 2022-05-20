@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Modal, Tooltip, Typography } from '@material-ui/core';
+import { Box, Button, Tooltip } from '@material-ui/core';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useAddDataMutation, useDeleteDataMutation } from '../../features/data/data-api-admin-slice';
 import { Check, Close } from '@material-ui/icons';
@@ -12,9 +12,9 @@ export default function ItemsImageModal(props: any) {
     const [ addData, addStates ] = useAddDataMutation();
     const [ deleteData, deleteStates ] = useDeleteDataMutation();
 
-    const [images, setImageItem] = useState(empty);
+    const handleClose = () => props.openCall(false);
 
-    const handleClose = () => { props.openCall(false); setImageItem(empty) };
+    const [images, setImageItem] = useState(empty);
 
     function handleAddImages(files: FileList) {
             let fileArr = Array.from(files);
@@ -72,64 +72,58 @@ export default function ItemsImageModal(props: any) {
       
       const formData = new FormData();
 
-      if (images) {
+      if (images.length) {
         for (let i = 0; i < images.length||0; i ++) {
           formData.append(`files`, images[i]);
         }
 
-        addData({ path: `items/${props.itemId}/image`, body: formData });
+        addData({ path: `items/${props.options.itemId}/image`, body: formData })
+            .then((res: any) => {
+                let { data } = res.data;
+                dispatch(addItems(data));
+                handleClose();
+            })
+            .catch((res: any) => {
+                let error = res.error;
+                console.error(error);
+            });
       }
 
     }
 
     return (
-        <Modal
-        open={props.open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        className="item-modal"
+        <Box 
+        className="item-modal-box-form" 
+        component="form"
         >
-            <Box className={`item-modal-box item-modal-box-${theme}`}>
-                <Box className="modal-item-header-container">
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Add New Images For Item
-                    </Typography>
-                    <Button className={`button-${theme} modal-close-button`} onClick={handleClose}>
-                        <Close />
-                    </Button>
-                </Box>
-                <Box 
-                className="item-modal-box-form" 
-                component="form"
-                >
-                    <Box id='itemImagePreview'>
-                    </Box>
-                    <Button className={`button-${theme}`}>
-                    Upload Images
-                    <input
-                        className="in-button-input"
-                        required
-                        type="file"
-                        id="item_itage_id"
-                        multiple={true}
-                        onChange={(e: any) => handleAddImages(e.target.files)}
-                    />
-                    </Button>
-                    <Box>
-                        {props.album?.map((image: any) => <div className='item-album-images'>
-                            <img className='' key={`album_${image.id}`} width="75px" height="75px" src={`${process.env.REACT_APP_BASE_URL}/${image.image}`}/>
-                            <Tooltip title="Remove Image from Item Album">
-                                <Close className='item-album-image-icon item-album-image-remove' onClick={(e) => handleImageDelete(e, image.id)} />
-                            </Tooltip>
-                            <Tooltip title="Set Image as Item General">
-                                <Check className='item-album-image-icon item-album-image-general' onClick={() => handleImageGeneral(props.itemId, image.id)} />
-                            </Tooltip>
-                        </div>)}
-                    </Box>
-                    <Button className={`button-${theme}`} onClick={uploadItemImage}>Save Item Image</Button>
-                </Box>
+            <Box>
+                {props.options.album?.map((image: any) => <div className='item-album-images'>
+                    <img className='' key={`album_${image.id}`} width="75px" height="75px" src={`${process.env.REACT_APP_BASE_URL}/${image.image}`}/>
+                    <Tooltip title="Remove Image from Item Album">
+                        <Close className={`item-album-image-icon item-album-image-remove button-reverse-${theme}`} onClick={(e) => handleImageDelete(e, image.id)} />
+                    </Tooltip>
+                    <Tooltip title="Set Image as Item General">
+                        <Check className={`item-album-image-icon item-album-image-general button-reverse-${theme}`} onClick={() => handleImageGeneral(props.options.itemId, image.id)} />
+                    </Tooltip>
+                </div>)}
             </Box>
-        </Modal>
-      );
+            <hr />
+            <Box id='itemImagePreview'>
+            </Box>
+            <div>
+                <Button className={`button-${theme}`}>
+                Upload Images
+                <input
+                    className="in-button-input"
+                    required
+                    type="file"
+                    id="item_itage_id"
+                    multiple={true}
+                    onChange={(e: any) => handleAddImages(e.target.files)}
+                />
+                </Button>
+                <Button className={`button-${theme}`} style={{marginLeft: '5px'}} onClick={uploadItemImage}>Save Item Image</Button>
+            </div>
+        </Box>
+    );
 }

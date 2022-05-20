@@ -41,33 +41,31 @@ export default function ItemsActions(props: any) {
               });
     }
 
-    function handleItemEdit({ itemId }: any) {
-
-    }
-
     const handleItemEditModal = () => setOpenEdit(true);
     const handleItemDeleteDialog = () => setOpenDelete(true);
 
     return (
         <Box>
-            <Tooltip title={`This item is ${props.deleted ? 'in' : ''}visible`}>
-                <IconButton className={`item-action-button button-${theme}`}>
-                    {props.deleted ? 
-                    <VisibilityOff onClick={() => handleItemDeleteRestore(props.itemId, true)} />
-                    :
-                    <Visibility onClick={() => handleItemDeleteRestore(props.itemId, false)} />}
-                </IconButton>
-            </Tooltip>
-            <Tooltip title="Edit Item">
-                <IconButton className={`item-action-button button-${theme}`}>
-                    <Edit onClick={handleItemEditModal} />
-                </IconButton>
-            </Tooltip>
-            <Tooltip title="Delete Item">
-                <IconButton className={`item-action-button button-${theme}`}>
-                    <Delete onClick={handleItemDeleteDialog} />
-                </IconButton>
-            </Tooltip>
+            <div className="item-action-button-container">
+                <Tooltip title={`This item is ${props.deleted ? 'in' : ''}visible`}>
+                    <IconButton className={`item-action-button button-icon-${theme}`}>
+                        {props.deleted ? 
+                        <VisibilityOff onClick={() => handleItemDeleteRestore(props.itemId, true)} />
+                        :
+                        <Visibility onClick={() => handleItemDeleteRestore(props.itemId, false)} />}
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Edit Item">
+                    <IconButton className={`item-action-button button-icon-${theme}`}>
+                        <Edit onClick={handleItemEditModal} />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete Item">
+                    <IconButton className={`item-action-button button-icon-${theme}`}>
+                        <Delete onClick={handleItemDeleteDialog} />
+                    </IconButton>
+                </Tooltip>
+            </div>
             <WoodDialog 
                 open={openDelete}
                 openCall={setOpenDelete}
@@ -79,7 +77,6 @@ export default function ItemsActions(props: any) {
             <WoodModal
                 open={openEdit}
                 openCall={setOpenEdit}
-                actionCall={handleItemEdit}
                 modalTitle='Edit Item'
                 modalMessage='Some message or description'
                 options={{itemId: props.itemId}}

@@ -1,9 +1,11 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Container, Typography } from "@material-ui/core";
+import { Button, Card, CardActions, CardContent, CardMedia, Tooltip, Typography } from "@material-ui/core";
+import { AddShoppingCart } from "@material-ui/icons";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useFetchDataQuery } from "../../features/data/data-api-slice";
 import { addItems } from "../../features/items/items-slice";
 import WoodModal from "../popups/modal";
+import ShadeGradient from "../shades/shade-gradient";
 import './item-cards.css';
 
 function ItemCards(props: any) {
@@ -25,55 +27,55 @@ function ItemCards(props: any) {
     setItem(items.find(item => item.id === itemId));
   }
 
-  function containerScroll(event: any) {
-    
-  }
-
   return (
-      <div className="cards-container" onScroll={containerScroll}>
-        <Container className="card-container">
-        {data.map(item => {
-          return <div key={item.id} id={`card_item_${item.id}`} className="app-card">
-            <Card className={'app-card-content app-card-' + theme}>
-              <CardMedia
-                component="img"
-                height="140"
-                image={`${process.env.REACT_APP_BASE_URL}/${item.image}`}
-                alt={item.name}
-              />
-            </Card>
-            <Card className={'app-card-content transparency app-card-' + theme}>
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {item.name}
-                </Typography>
-                <Typography variant="body2">
-                  Type: {item.type}
-                </Typography>
-                <Typography variant="body2">
-                  Material: {item.material}
-                </Typography>
-                <Typography variant="body2">
-                  Size: {item.size}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">Share</Button>
-                <Button size="small" onClick={() => handleItemModal(item.id)}>Details</Button>
-              </CardActions>
-            </Card>
-          </div>
-        })}
-        <WoodModal
-          open={open}
-          openCall={setOpen}
-          actionCall={handleItemModal}
-          modalTitle={item?.name}
-          modalMessage=''
-          options={{itemId: item?.id}}
-          contentAlias='ItemDetails'
-        />
-      </Container>
+      <div style={{position: 'relative', paddingLeft: 5, paddingRight: 5}}>
+        <div className="cards-container">
+          <div className="card-container">
+          {items.map(item => {
+            return <div key={item.id} id={`card_item_${item.id}`} className="app-card">
+              <Card className={'app-card-content app-card-' + theme}>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={`${process.env.REACT_APP_BASE_URL}/${item.thumb}`}
+                  alt={item.name}
+                />
+              </Card>
+              <Card className={'app-card-content-info transparency app-card-' + theme}>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div" style={{whiteSpace: 'nowrap'}}>
+                    {item.name}
+                  </Typography>
+                  <Typography variant="body2" style={{whiteSpace: 'nowrap'}}>
+                    Type: {item.type}
+                  </Typography>
+                  <Typography variant="body2" style={{whiteSpace: 'nowrap'}}>
+                    Material: {item.material}
+                  </Typography>
+                </CardContent>
+                <CardActions style={{marginLeft: 'auto'}}>
+                  <Tooltip title='Add to cart'> 
+                    <Button className={`button-${theme}`}><AddShoppingCart /></Button>
+                  </Tooltip>
+                  <Tooltip title='View itrem details'>
+                    <Button className={`button-${theme}`} onClick={() => handleItemModal(item.id)}>Details</Button>
+                  </Tooltip>
+                </CardActions>
+              </Card>
+            </div>
+          })}
+          <WoodModal
+            open={open}
+            openCall={setOpen}
+            modalTitle={item?.name}
+            modalMessage=''
+            options={{itemId: item?.id}}
+            contentAlias='ItemDetails'
+          />
+        </div>
+      </div>
+      <ShadeGradient right={false} width={24}/>
+      <ShadeGradient right={true} width={24}/>
     </div>
   )
 }
