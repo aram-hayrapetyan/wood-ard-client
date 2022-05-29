@@ -5,6 +5,7 @@ import { Close } from '@material-ui/icons';
 import ItemForm from '../itemsList/items-form';
 import ItemDetails from '../cards/item-details';
 import ItemsImageModal from '../itemsList/items-image-modal';
+import TypeForm from '../typesList/types-form';
 
 interface WoodModalProps {
     openCall: Function;
@@ -21,6 +22,8 @@ export default function WoodModal(props: WoodModalProps) {
 
     function contAlias(alias: string): JSX.Element|string {
         switch(alias) {
+            case 'TypeForm':
+                return <TypeForm options={props.options} openCall={props.openCall} /> ;
             case 'ItemForm':
                 return <ItemForm options={props.options} openCall={props.openCall} /> ;
             case 'ItemDetails':

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Button, Container } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { useFetchDataQuery } from '../../features/data/data-api-slice';
 import './items-list.css'
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import ItemModal from './items-modal';
 import ItemsImage from './items-image';
 import { addItems } from '../../features/items/items-slice';
+import { addTypes } from '../../features/types/types-slice';
 import ItemsActions from './item-action-buttons';
 import WoodModal from '../popups/modal';
 
@@ -19,10 +20,16 @@ export default function ItemsList() {
     const dispatch = useAppDispatch();
     const theme = useAppSelector(state => state.theme.value);
     const items = useAppSelector(state => state.items.value);
-    const { data = [], isFetching, isSuccess } = useFetchDataQuery('items');
+    const types = useAppSelector(state => state.types.value);
+    const itemsFetch = useFetchDataQuery('items');
+    const typesFetch = useFetchDataQuery('types');
 
-    if (!isFetching && isSuccess && items.length === 0) {
-      dispatch(addItems(data));
+    if (!itemsFetch.isFetching && itemsFetch.isSuccess && items.length === 0) {
+      dispatch(addItems(itemsFetch?.data));
+    }
+
+    if (!typesFetch.isFetching && typesFetch.isSuccess && types.length === 0) {
+      dispatch(addTypes(typesFetch?.data));
     }
 
     const [album = [], setAlbum] = useState(imageArr);

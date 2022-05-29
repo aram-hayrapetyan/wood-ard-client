@@ -2,5 +2,30 @@
     position: absolute;
     right: 20px;
     top: 5px;
-    z-index: 9999;
+}
+
+.wood-drawer-dark {
+    background-color: #424242!important;
+    color: #f5f5f5!important;
+}
+
+.wood-drawer-light {
+    background-color: #f5f5f5!important;
+    color: #424242!important;
+}
+
+.tab-menu-button {
+    margin: 5px;
+}
+
+@media screen and (max-width: 400px) {
+    .tabs-menu-large {
+        display: none!important;
+    }
+}
+
+@media screen and (min-width: 401px) {
+    .tabs-menu-mobile {
+        display: none!important;
+    }
 }

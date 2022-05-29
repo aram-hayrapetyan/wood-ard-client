@@ -4,6 +4,7 @@ import { useAppSelector } from '../../app/hooks';
 import { useAddDataMutation, useEditDataMutation } from '../../features/data/data-api-admin-slice';
 import { useDispatch } from 'react-redux';
 import { addItems } from '../../features/items/items-slice';
+import './items-form.css';
 
 const fields: string[] = ['name', 'material', 'type', 'details', 'price'];
 
@@ -15,6 +16,7 @@ export default function ItemForm(props: any) {
     const [ editData ] = useEditDataMutation();
     const theme = useAppSelector(state => state.theme.value);
     const items = useAppSelector(state => state.items.value);
+    const types = useAppSelector(state => state.types.value);
     let working_item = Object.assign({}, defaultItem);
 
     if (props.options.itemId) {
@@ -39,8 +41,15 @@ export default function ItemForm(props: any) {
     const handleSaveItem = (e: any) => {
         e.preventDefault();
         if (!sent) setSent(true);
-        for (let value of Object.values(item)) {
-            if (!value) return;
+
+        for (let i in item) {
+            if (i !== 'details' && !item[i]) return;
+        }
+
+        if (item.type) {
+            let type_entity = types.find(type => type.name.toLowerCase() === item.type.toLowerCase());
+
+            if (type_entity) item['type_id'] = type_entity.id;
         }
 
         if (props.options.itemId) {
@@ -78,7 +87,7 @@ export default function ItemForm(props: any) {
                 margin="normal"
                 required
                 fullWidth
-                error={!item[_] && sent ? true : false}
+                error={(!item[_] && sent && _ !== 'details') ? true : false}
                 type={_ === 'price' ? 'number' : 'text'}
                 id={'item_' + _ + '_' + index}
                 label={_.charAt(0).toUpperCase() + _.slice(1)}
