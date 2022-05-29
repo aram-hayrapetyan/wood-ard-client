@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Container, Tooltip, Typography } from '@material-ui/core';
+import { Button, Tooltip, Typography } from '@material-ui/core';
 import Sortable, { SortableEvent } from 'sortablejs';
 import { useFetchDataQuery } from '../../features/data/data-api-slice';
 import './slider-list.css'

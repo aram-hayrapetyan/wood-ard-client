@@ -62,7 +62,7 @@ function Header() {
                         label=''
                         />
                     </FormGroup>
-                    <FormControl>
+                    <FormControl className={`select-${theme}`}>
                         <InputLabel id="lang-select-label">Language</InputLabel>
                         <Select labelId='lang-select-label' value={language} aria-label={language} onChange={(e: any) => handleLanguageSwap(e.target.value)}>
                             <MenuItem value='ENG'>ENG</MenuItem>

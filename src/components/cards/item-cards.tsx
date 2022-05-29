@@ -1,5 +1,5 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Tooltip, Typography } from "@material-ui/core";
-import { AddShoppingCart } from "@material-ui/icons";
+import { ShoppingCart } from "@material-ui/icons";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useFetchDataQuery } from "../../features/data/data-api-slice";
@@ -55,7 +55,7 @@ function ItemCards(props: any) {
                 </CardContent>
                 <CardActions style={{marginLeft: 'auto'}}>
                   <Tooltip title='Add to cart'> 
-                    <Button className={`button-${theme}`}><AddShoppingCart /></Button>
+                    <Button className={`button-${theme}`}><ShoppingCart /></Button>
                   </Tooltip>
                   <Tooltip title='View itrem details'>
                     <Button className={`button-${theme}`} onClick={() => handleItemModal(item.id)}>Details</Button>

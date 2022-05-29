@@ -5,6 +5,7 @@ import themeChanger from '../features/themes/themes-slice';
 import authStateReducer from '../features/auth/auth-requested-slice';
 import tokenReducer from '../features/auth/token-slice';
 import itemsReducer from '../features/items/items-slice';
+import typesReducer from '../features/types/types-slice'
 import sliderReducer from '../features/slider/slider-slice';
 import { dataApiSlice } from "../features/data/data-api-slice";
 import { authApiSlice } from "../features/auth/auth-api-slice";
@@ -18,6 +19,7 @@ export const store = configureStore({
         authState: authStateReducer,
         token: tokenReducer,
         items: itemsReducer,
+        types: typesReducer,
         slider: sliderReducer,
         [dataApiSlice.reducerPath]: dataApiSlice.reducer,
         [authApiSlice.reducerPath]: authApiSlice.reducer,
