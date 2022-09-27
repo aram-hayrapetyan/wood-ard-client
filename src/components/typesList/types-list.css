@@ -36,13 +36,13 @@
     background: #353535;
 }
 
-@media screen and (max-width: 960px) {
+@media screen and (min-width: 641px) {
     .types-list {
         grid-template-columns: repeat(4, 1fr);
     }
 }
 
-@media screen and (max-width: 640px) {
+@media (min-width: 481px) and (max-width: 640px) {
     .types-list {
         grid-template-columns: repeat(3, 1fr);
     }

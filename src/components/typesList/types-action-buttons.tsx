@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { useAppSelector } from '../../app/hooks';
-import { useDeleteDataMutation, useEditDataMutation } from '../../features/data/data-api-admin-slice';
+import { useDeleteDataMutation } from '../../features/data/data-api-admin-slice';
 import { useDispatch } from 'react-redux';
 import { addTypes } from '../../features/types/types-slice';
 import './types-list.css';

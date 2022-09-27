@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Button, Modal, Typography } from '@material-ui/core';
 import { useAppSelector } from '../../app/hooks';
 import { Close } from '@material-ui/icons';
@@ -14,6 +14,7 @@ interface WoodModalProps {
     modalMessage?: string;
     options: any;
     contentAlias?: any;
+    fullScreen?: boolean;
 }
 
 export default function WoodModal(props: WoodModalProps) {
@@ -42,7 +43,7 @@ export default function WoodModal(props: WoodModalProps) {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box className={`wood-modal wood-modal-${theme}`}>
+            <Box className={`wood-modal wood-modal-${theme} ${props.fullScreen ? 'wood-modal-full-screen' : ''}`}>
                 <Box className="modal-wood-header-container">
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         {props.modalTitle}

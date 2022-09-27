@@ -1,5 +1,4 @@
-import { Button, Card, CardActions, CardContent, Tooltip, Typography } from "@material-ui/core";
-import { AddShoppingCart } from "@material-ui/icons";
+import { Card, CardContent, Typography } from "@material-ui/core";
 import { useAppSelector } from "../../app/hooks";
 import ImageSlider from "../imageSlider/image-slider";
 

@@ -1,0 +1,28 @@
+.catalog-card-container {
+    display: grid;
+    gap: 5px;
+  }
+  
+  @media screen and (min-width: 1041px) {
+    .catalog-card-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  @media (min-width: 781px) and (max-width: 1040px) {
+    .catalog-card-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (min-width: 521px) and (max-width: 780px) {
+    .catalog-card-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media screen and (max-width: 520px) {
+    .catalog-card-container {
+        grid-template-columns: repeat(1, 1fr);
+    }
+  }

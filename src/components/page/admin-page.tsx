@@ -1,17 +1,17 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import { Button, Container, IconButton, Menu, MenuItem, Tab, Tabs } from '@material-ui/core';
+import { Button, IconButton, Menu, MenuItem, Tab, Tabs } from '@material-ui/core';
 import { Route, Routes, Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { setToken } from '../../features/auth/token-slice';
-import './page.css';
+import './admin-page.css';
 import ItemsList from '../itemsList/items-list';
 import SliderList from '../sliderList/slider-list';
 import TypesList from '../typesList/types-list';
 import NotFound from '../../404';
 import { MenuBook } from '@material-ui/icons';
 
-function Page() {
+function AdminPage() {
     const theme = useAppSelector(state => state.theme.value);
     const dispatch = useAppDispatch();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -87,4 +87,4 @@ function Page() {
     )
 }
 
-export default Page;
+export default AdminPage;

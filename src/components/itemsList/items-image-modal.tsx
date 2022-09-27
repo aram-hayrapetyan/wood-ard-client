@@ -9,8 +9,8 @@ export default function ItemsImageModal(props: any) {
     let empty: any;
     const dispatch = useAppDispatch();
     const theme = useAppSelector(state => state.theme.value);
-    const [ addData, addStates ] = useAddDataMutation();
-    const [ deleteData, deleteStates ] = useDeleteDataMutation();
+    const [ addData ] = useAddDataMutation();
+    const [ deleteData ] = useDeleteDataMutation();
 
     const handleClose = () => props.openCall(false);
 
@@ -98,7 +98,7 @@ export default function ItemsImageModal(props: any) {
         >
             <Box>
                 {props.options.album?.map((image: any) => <div className='item-album-images'>
-                    <img className='' key={`album_${image.id}`} width="75px" height="75px" src={`${process.env.REACT_APP_BASE_URL}/${image.image}`}/>
+                    <img className='' key={`album_${image.id}`} width="75px" height="75px" src={`${process.env.REACT_APP_BASE_URL}/${image.image}`} alt=''/>
                     <Tooltip title="Remove Image from Item Album">
                         <Close className={`item-album-image-icon item-album-image-remove button-reverse-${theme}`} onClick={(e) => handleImageDelete(e, image.id)} />
                     </Tooltip>
