@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Tooltip, Typography } from '@material-ui/core';
 import Sortable, { SortableEvent } from 'sortablejs';
 import { useFetchDataQuery } from '../../features/data/data-api-slice';
@@ -16,11 +16,11 @@ export default function ItemsList() {
     const dispatch = useDispatch();
     const theme = useAppSelector(state => state.theme.value);
     const slider = useAppSelector(state => state.slider.value);
-    const [ deleteData, deleteStates ] = useDeleteDataMutation();
-    const [ addData, addStates ] = useAddDataMutation();
+    const [ deleteData ] = useDeleteDataMutation();
+    const [ addData ] = useAddDataMutation();
     const { data = [], isFetching, isSuccess } = useFetchDataQuery('slider?thumbnail=true');
 
-    const [ sorted, setStorted ] = useState(emptyArr);
+    const sorted = useRef(emptyArr);
     const [ sliderImage, setSliderImage ] = useState(empty);
 
     if (!isFetching && isSuccess && slider.length === 0) {
@@ -29,7 +29,6 @@ export default function ItemsList() {
 
     useEffect(() => {
       let el = document.getElementById('woodSortable');
-
       if (el){
         Sortable.create(el, {
           animation: 150,
@@ -39,15 +38,15 @@ export default function ItemsList() {
             let sorted_data: any[] = Array.from(event.from.children).map((child: Element, i: number) => {
               return { id: child.getAttribute('data-id'), order: i + 1 };
             })
-            setStorted(sorted_data);
+            sorted.current = sorted_data;
           }
         });
       }
     }, slider);
 
     function saveOrder() {
-      if (sorted.length) {
-        addData({ path: 'slider/order', body: sorted })
+      if (sorted.current.length) {
+        addData({ path: 'slider/order', body: sorted.current })
           .then((res: any) => {
             let { data } = res.data;
             dispatch(addSlider(data));

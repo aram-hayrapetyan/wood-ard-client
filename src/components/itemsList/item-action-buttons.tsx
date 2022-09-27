@@ -10,8 +10,8 @@ import WoodModal from '../popups/modal';
 export default function ItemsActions(props: any) {
     const dispatch = useAppDispatch();
     const theme = useAppSelector(state => state.theme.value);
-    const [ editData, editStates ] = useEditDataMutation();
-    const [ deleteData, deleteStates ] = useDeleteDataMutation();
+    const [ editData ] = useEditDataMutation();
+    const [ deleteData ] = useDeleteDataMutation();
     
     const [openDelete, setOpenDelete] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);

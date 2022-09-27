@@ -1,12 +1,9 @@
 .catalog-card-box {
-    display: inline-block;
-    margin: 5px;
-    width: 300px;
-    min-width: 200px;
+    width: 250px;
 }
 
-.catalog-card {
-    display: flex;
+.catalog-card-name {
+    white-space: nowrap;
 }
 
 .catalog-card-dark {

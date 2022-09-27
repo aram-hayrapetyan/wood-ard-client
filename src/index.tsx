@@ -20,7 +20,7 @@ render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/catalog/*" element={<Catalog />} />
           <Route path="/admin/*" element={<Admin />} />
           <Route path="/privacy-policy/*" element={<PrivacyPolicy />} />
           <Route path="/*" element={<NotFound />} />

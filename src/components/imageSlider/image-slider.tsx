@@ -31,11 +31,11 @@ function ImageSlider(props: Slider) {
     }));
 
     const [ slideStartX, setSlideStartX ] = useState(0);
-    const [ currentSlideIndex, setCurrentSlideIndex ] = useState(0);
+    // const [ currentSlideIndex, setCurrentSlideIndex ] = useState(0);
     
     function sliderChange(index: number) {
         setSlider(slider.map((a, i) => { return { ...a, visible: i === index } } ));
-        setCurrentSlideIndex(index);
+        // setCurrentSlideIndex(index);
     }
 
     function sliderSlideStart(e: any){

@@ -27,7 +27,7 @@ function Admin() {
         
     */
     const Login = loadable.default(() => import('./components/login/login'));
-    const Page = loadable.default(() => import('./components/page/page'));
+    const AdminPage = loadable.default(() => import('./components/page/admin-page'));
 
     return (
         <div className={`Admin Admin-${theme}`}>
@@ -35,7 +35,7 @@ function Admin() {
             <Container style={{position: 'relative'}}>
                 <Routes>
                     <Route path="/login" element={(access_token || token) ? <Navigate to='../page' /> : <Login />} />
-                    <Route path="/page/*" element={(access_token || token) ? <Page /> : <Navigate to='../login' />} />
+                    <Route path="/page/*" element={(access_token || token) ? <AdminPage /> : <Navigate to='../login' />} />
                     <Route path="/*" element={<NotFound />} />
                 </Routes>
             </Container>
