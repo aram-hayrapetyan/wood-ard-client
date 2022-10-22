@@ -12,7 +12,7 @@ function ItemPage() {
 
     if (item_id && !item) {
         console.log("here")
-        let i = items.filter(({id}) => id === parseInt(item_id));
+        let i = items.find(({id}) => id === parseInt(item_id));
         console.log(i)
         setItem(i)
     }

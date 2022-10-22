@@ -28,16 +28,18 @@ export default function ItemCatalogCard(props: any) {
                 </CardContent>
                 <CardActions>
                     <Tooltip title='View item page'>
-                        <IconButton className={`button-${theme}`}aria-label="deatils">
-                            <Details></Details>
-                        </IconButton>
+                        <Link id={`toCatalogItem${props.item.id}`} to={`item/${props.item.id}`} >
+                            <IconButton className={`button-${theme}`}aria-label="deatils">
+                                <Details>
+                                </Details>
+                            </IconButton>
+                        </Link>
                     </Tooltip>
                     <Tooltip title='Add to cart'>
                         <IconButton className={`button-${theme}`}aria-label="cart">
                             <ShoppingCart></ShoppingCart>
                         </IconButton>
                     </Tooltip>
-                    <Link id={`toCatalogItem${props.item.id}`} to={`item/${props.item.id}`} >Details</Link>
                 </CardActions>
             </Card>
         </div>

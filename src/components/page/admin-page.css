@@ -2,6 +2,7 @@
     position: absolute;
     right: 20px;
     top: 5px;
+    z-index: 999;
 }
 
 .wood-drawer-dark {

@@ -97,7 +97,7 @@ export default function ItemsImageModal(props: any) {
         component="form"
         >
             <Box>
-                {props.options.album?.map((image: any) => <div className='item-album-images'>
+                {props.options.album?.map((image: any) => <div className='item-album-images' key={image.id}>
                     <img className='' key={`album_${image.id}`} width="75px" height="75px" src={`${process.env.REACT_APP_BASE_URL}/${image.image}`} alt=''/>
                     <Tooltip title="Remove Image from Item Album">
                         <Close className={`item-album-image-icon item-album-image-remove button-reverse-${theme}`} onClick={(e) => handleImageDelete(e, image.id)} />

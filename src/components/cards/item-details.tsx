@@ -8,8 +8,6 @@ function ItemDetails(props: any) {
 
     const item = items.find(item => item.id === props.options.itemId);
 
-    console.log(item)
-
   return (
       <div className="item-details-contect">
         <ImageSlider album={item.album} />

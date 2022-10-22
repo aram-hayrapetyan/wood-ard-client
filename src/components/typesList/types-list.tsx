@@ -23,7 +23,7 @@ export default function TypesList(props: any) {
         <div>
             <TypeModal></TypeModal>
             <div className='types-list'>
-                {types.map(type => <Tooltip title={type.description} placement="top">
+                {types.map(type => <Tooltip title={type.description} placement="top" key={type.id}>
                     <div className={`type-unit type-unit-${theme}`}>
                         <span>{type.name}</span>
                         <TypesActionButtons typeId={type.id} />
