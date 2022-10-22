@@ -19,6 +19,7 @@ function LightTheme() {
         }
 
         if (!workingArray.length) {
+            localStorage.setItem("woodArdTheme", 'light');
             dispatch(changeTheme('light'));
         }
     })

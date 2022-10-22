@@ -1,6 +1,6 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Tooltip, Typography } from "@material-ui/core";
 import { ShoppingCart } from "@material-ui/icons";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useFetchDataQuery } from "../../features/data/data-api-slice";
 import { addItems } from "../../features/items/items-slice";
@@ -20,11 +20,11 @@ function ItemCards(props: any) {
     }
 
   const [open, setOpen] = useState(false);
-  const [item, setItem] = useState(empty);
+  const item = useRef(empty);
   
   function handleItemModal(itemId: number) {
     setOpen(true);
-    setItem(items.find(item => item.id === itemId));
+    item.current = items.find(item => item.id === itemId);
   }
 
   return (
@@ -67,9 +67,9 @@ function ItemCards(props: any) {
           <WoodModal
             open={open}
             openCall={setOpen}
-            modalTitle={item?.name}
+            modalTitle={item.current?.name}
             modalMessage=''
-            options={{itemId: item?.id}}
+            options={{itemId: item.current?.id}}
             contentAlias='ItemDetails'
           />
         </div>

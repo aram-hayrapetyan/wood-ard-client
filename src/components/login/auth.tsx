@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 
 function Auth(params: any) {
     const dispatch = useAppDispatch();
-    const {data, isFetching, isSuccess} = useAuthQuery(params.credentials);
+    const {data, isFetching, isSuccess, isError} = useAuthQuery(params.credentials);
 
     if (!isFetching && isSuccess) {
         if (data.access_token) {
@@ -15,9 +15,11 @@ function Auth(params: any) {
             dispatch(setToken(data.access_token));
         }
         dispatch(authSending(false));
+    } else if (isError) {
+        dispatch(authSending(false));
     }
 
-    return (<div />)
+    return (< ></>)
 }
 
 export default Auth;

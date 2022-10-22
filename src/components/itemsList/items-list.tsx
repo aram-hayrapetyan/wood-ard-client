@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button } from '@material-ui/core';
 import { useFetchDataQuery } from '../../features/data/data-api-slice';
 import './items-list.css'
@@ -32,13 +32,13 @@ export default function ItemsList() {
       dispatch(addTypes(typesFetch?.data));
     }
 
-    const [album = [], setAlbum] = useState(imageArr);
     const [open, setOpen] = useState(false);
-    const [itemID, setitemID] = useState(0);
+    const album = useRef(imageArr);
+    const itemID = useRef(0);
 
-    function handleImageModal(item_id: number, index: number) {
-      setAlbum(items[index].album);
-      setitemID(item_id);
+    function handleImageModal(item_id: number, item_album: Image[]) {
+      itemID.current = item_id;
+      album.current = item_album;
       setOpen(true);
     }
 
@@ -47,13 +47,13 @@ export default function ItemsList() {
           <ItemModal></ItemModal>
            {/* Table */}
            <div className="items-list-conatiner">
-            {items.map((row, index) => {
+            {items.map(row => {
               return(
-                <div className={`items-list-item items-list-item-${theme}`}>
+                <div className={`items-list-item items-list-item-${theme}`} key={row.id}>
                   <div className="item-image-container">
                     <Button 
                     className={`item-image-button-${theme} item-image-button`}
-                    onClick={() => handleImageModal(row.id, index)}>
+                    onClick={() => handleImageModal(row.id, row.album)}>
                       <ItemsImage path={row.image} />
                     </Button> 
                   </div>
@@ -71,7 +71,7 @@ export default function ItemsList() {
                 openCall={setOpen}
                 modalTitle='Add New Images For Item'
                 modalMessage=''
-                options={{itemId: itemID, album}}
+                options={{itemId: itemID.current, album: album.current}}
                 contentAlias='ItemsImageModal'
             />
         </div>
