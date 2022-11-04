@@ -33,8 +33,8 @@ export default function ItemsList() {
     }
 
     const [open, setOpen] = useState(false);
-    const album = useRef(imageArr);
-    const itemID = useRef(0);
+    const album: React.MutableRefObject<Image[]> = useRef(imageArr);
+    const itemID: React.MutableRefObject<number> = useRef(0);
 
     function handleImageModal(item_id: number, item_album: Image[]) {
       itemID.current = item_id;

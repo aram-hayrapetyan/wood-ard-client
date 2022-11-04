@@ -30,10 +30,12 @@ function ImageSlider(props: Slider) {
         }
     }));
 
-    const slideStartX = useRef(0);
-    const currentSlideIndex = useRef(0);
+    const slideStartX: React.MutableRefObject<number> = useRef(0);
+    const currentSlideIndex: React.MutableRefObject<number> = useRef(0);
+    const timeout: React.MutableRefObject<any> = useRef();
     
     function sliderChange(index: number) {
+        clearTimeout(timeout.current);
         setSlider(slider.map((a, i) => { return { ...a, visible: i === index } } ));
         currentSlideIndex.current = index;
     }
@@ -55,12 +57,12 @@ function ImageSlider(props: Slider) {
 
     useEffect(() => {
         if (props.autoSlide) {
-            setInterval(() => {
+            timeout.current = setTimeout(() => {
                 let index: number = (currentSlideIndex.current === (slider.length - 1)) ? 0 : (currentSlideIndex.current + 1);
                 sliderChange(index);
             }, 10000);
         }
-    }, []);
+    }, [slider, props.autoSlide]);
 
     return (
         <Box className="slider-container">
