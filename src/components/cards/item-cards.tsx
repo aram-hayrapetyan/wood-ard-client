@@ -1,26 +1,24 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Tooltip, Typography } from "@material-ui/core";
 import { ShoppingCart } from "@material-ui/icons";
 import { useState, useRef } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../app/hooks";
 import { useFetchDataQuery } from "../../features/data/data-api-slice";
-import { addItems } from "../../features/items/items-slice";
 import WoodModal from "../popups/modal";
 import ShadeGradient from "../shades/shade-gradient";
 import './item-cards.css';
 
 function ItemCards(props: any) {
-  let empty: any = null;
-  const dispatch = useAppDispatch();
   const theme = useAppSelector(state => state.theme.value);
-  const items = useAppSelector(state => state.items.value);
-  const { data = [], isFetching, isSuccess } = useFetchDataQuery('items/public');
+  
+  const [ items = [], setItems ] = useState<any[]>();
+  const { data = [], isFetching, isSuccess } = useFetchDataQuery(`items/public${props.path ? `?type=${props.path}` : ''}`);
 
-    if (!isFetching && isSuccess && items.length === 0) {
-      dispatch(addItems(data));
-    }
+  if (!isFetching && isSuccess && items.length === 0) {
+    setItems(data);
+  }
 
-  const [open, setOpen] = useState(false);
-  const item = useRef(empty);
+  const [open, setOpen] = useState<boolean>(false);
+  const item: React.MutableRefObject<any> = useRef<any>();
   
   function handleItemModal(itemId: number) {
     setOpen(true);
@@ -69,7 +67,13 @@ function ItemCards(props: any) {
             openCall={setOpen}
             modalTitle={item.current?.name}
             modalMessage=''
-            options={{itemId: item.current?.id}}
+            options={{
+              id: item.current?.id,
+              name: item.current?.name,
+              type: item.current?.type,
+              material: item.current?.material,
+              album: item.current?.album,
+            }}
             contentAlias='ItemDetails'
           />
         </div>

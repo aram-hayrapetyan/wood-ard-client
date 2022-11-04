@@ -20,7 +20,7 @@ export default function ItemsList() {
     const [ addData ] = useAddDataMutation();
     const { data = [], isFetching, isSuccess } = useFetchDataQuery('slider?thumbnail=true');
 
-    const sorted = useRef(emptyArr);
+    const sorted: React.MutableRefObject<any[]> = useRef(emptyArr);
     const [ sliderImage, setSliderImage ] = useState(empty);
 
     if (!isFetching && isSuccess && slider.length === 0) {
